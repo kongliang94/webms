@@ -40,8 +40,7 @@
             //弹出loading
             var loginLoading = top.layer.msg('登陆中，请稍候', {icon: 16, time: false, shade: 0.8});
             //记录ajax请求返回值
-            var ajaxReturnData;
-            alert(1);
+            var ajaxReturnData;          
             //登陆验证
             $.ajax({
                 url: '${ctx}/loginCheck',
@@ -52,7 +51,6 @@
                     ajaxReturnData = data;
                 }
             });
-            alert(2);
             //登陆成功
             if (ajaxReturnData.returnCode == 0000) {
                 top.layer.close(loginLoading);

@@ -1,5 +1,6 @@
 package com.kongl.cms.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -31,6 +32,14 @@ public class LoginController extends BaseController{
 		//System.out.println(11);
 		log.info("登陆验证处理开始");
 		long startTime=System.currentTimeMillis();
+		if (StringUtils.isEmpty(username)) {
+			log.error("登陆验证失败,原因:用户名不能为空");
+			return ResultInfo.returnCodeMessage(ResultCode.GLOBAL_LOGIN_NAME_NULL);
+		}
+		if (StringUtils.isEmpty(password)) {
+			log.error("登陆验证失败,原因:密码不能为空");
+			return ResultInfo.returnCodeMessage(ResultCode.GLOBAL_LOGIN_PASS_NULL);
+		}
 		UsernamePasswordToken token=new UsernamePasswordToken(username, password);
 		token.setRememberMe(true);
 		

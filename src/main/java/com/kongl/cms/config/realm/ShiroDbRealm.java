@@ -51,19 +51,20 @@ public class ShiroDbRealm extends AuthorizingRealm{
 		if (user==null) {
 			throw new UnknownAccountException();
 		}
+		/*user=userService.selectUserRolesByUserId(user.getUserId());
 		String roleNames=user.getRoleNames();
-		String roleids=user.getRoleIds();
+		String roleids=user.getRoleIds();*/
 		Set<String> permissionSet = new HashSet<>();
 	    Set<String> roleNameSet = new HashSet<>();
-
+/*
 	    for (String id : roleids.split(",")) {
 			//通过roleid去查询对应的resource
 		}
 	    for (String roleName : roleNames.split(",")) {
 			roleNameSet.add(roleName);
-		}
+		}*/
 		SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();		
-		simpleAuthorizationInfo.addRoles(roleNameSet);
+		//simpleAuthorizationInfo.addRoles(roleNameSet);
 		//这里应该是该用户的角色所拥有的权限，下面是直接写死的数据
 		Resource res = resourceService.selectByPrimaryKey(2);
 		simpleAuthorizationInfo.addStringPermission(res.getResModelCode());
