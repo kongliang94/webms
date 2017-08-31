@@ -181,6 +181,12 @@
         LIMIT #{start},#{rows}
     </select>
 
+	<select id="selectRoleByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		 SELECT
+        <include refid="Base_Column_List" />
+        FROM cc_role
+        where role_name=#{roleName,jdbcType=VARCHAR}
+	</select>
     <!-- 根据用户Id查询用户所对应的角色信息 -->
     <select id="selectUserRolesByUserId" resultMap="BaseResultMap">
         SELECT

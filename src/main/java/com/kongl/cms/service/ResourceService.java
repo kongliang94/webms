@@ -102,4 +102,10 @@ public class ResourceService {
         }
         return null;
     }
+    public  List<Resource> selectResLevel2ListByParentid(Integer resParentid) {
+
+        //二级菜单
+        List<Resource> ResLevel2List =resourceMapper.selectResLevelListByParentid(resParentid);
+        return ResLevel2List;
+    }
 }

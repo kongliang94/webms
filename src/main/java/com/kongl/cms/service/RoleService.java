@@ -78,6 +78,10 @@ public class RoleService {
         try {
             //保存角色信息
             if (null == role.getRoleId()) {
+            	Role roleold=roleMapper.selectRoleByName(role.getRoleName());
+            	if (roleold!=null) {
+					return ResultInfo.returnCodeMessage(ResultCode.ROLE_SAVE_ERROR);
+				}
                 role.setCreator(loginName);
                 role.setCreateTime(new Date());
                 roleMapper.insertSelective(role);

@@ -43,6 +43,11 @@
     delete from cc_user_role
     where user_role_id = #{userRoleId,jdbcType=INTEGER}
   </delete>
+  
+  <delete id="deleteUserRolesByUserId" parameterType="java.lang.Integer">
+  	 delete from cc_user_role
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="com.kongl.cms.domain.vo.UserRole" >
     <!--
       WARNING - @mbggenerated

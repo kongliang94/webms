@@ -139,16 +139,35 @@
        //设置状态
         $("body").on("click",".links_del",function(){
             var userId = $(this).attr("data-id");
-            alert(userId);
-            var index = layui.layer.open({
-                title : "编辑用户",
-                type : 2,
-                content : "${ctx}/user/user_update?userId="+userId,
-                area: ['550px', '265px'],
-                success : function(layero, index){
+            layer.open({
+                content: '您确认取消删除？',
+                btn: ['确认', '取消'],
+                shadeClose: false,
+                yes: function(){
+                	 $.ajax({
+                         url : '${ctx}/user/user_delete',
+                         type : 'post',       
+                         data :{
+                         	userId: userId
+                         }, 
+                         success : function(data){
+                         	
+                        	 if(data.returnCode == 0000){               		
+                        		layer.open({content: "用户信息删除成功！", time: 1});  
+                           	 	window.location.reload();
+                          }else{
+                        	  layer.open({content: "用户信息删除失败！", time: 1});  
+                         	  window.location.reload();
+                          }
+                      },error:function(data){
+                          layer.close(index);
 
+                      }});                               
+                }, no: function(){
+                    layer.open({content: '您选择了取消', time: 1});
                 }
             });
+           
         }); 
       
       

@@ -126,6 +126,10 @@ public class UserService {
         try {
             //保存用户信息
             if (null == user.getUserId()) {
+            	User userold=userMapper.selectUserByloginNameAndStatus(user.getUserLoginName(), (long) 0);
+            	if (userold!=null) {
+            		 return ResultInfo.returnCodeMessage(ResultCode.USER_SAVE_ERROR);
+				}
                 user.setUserPassword("123456");
                 user.setCreator(loginName);
                 user.setCreateTime(new Date());
@@ -227,5 +231,21 @@ public class UserService {
         return ResultInfo.returnCodeMessage(ResultCode.GLOBAL_SUCCESS);
     }
 
-
+    public ResultInfo deleteUserAndRole(Integer userId) throws Exception{
+        log.error("删除用户开始");
+    	User user=selectUserRolesByUserId(userId);
+    	if (user==null) {
+			return ResultInfo.returnCodeMessage(ResultCode.USER_ROLE_DELETE_ERROR);
+		}
+        if (user.getRoleIds()!=null) {
+			userRoleMapper.deleteUserRolesByUserId(userId);
+		}
+        int status=userMapper.deleteByPrimaryKey(userId);
+        if (status!=1) {
+			return ResultInfo.returnCodeMessage(ResultCode.USER_ROLE_DELETE_ERROR);
+		}
+        log.error("删除用户结束");
+    	return ResultInfo.returnCodeMessage(ResultCode.GLOBAL_SUCCESS);
+    	
+    }
 }

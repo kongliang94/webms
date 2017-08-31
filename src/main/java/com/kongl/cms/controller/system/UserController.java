@@ -11,6 +11,7 @@ import com.kongl.cms.controller.BaseController;
 import com.kongl.cms.domain.bo.ResultInfo;
 import com.kongl.cms.domain.vo.Role;
 import com.kongl.cms.domain.vo.User;
+import com.kongl.cms.service.RoleService;
 import com.kongl.cms.service.UserService;
 
 
@@ -21,6 +22,8 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RoleService roleService;
 	@RequestMapping("/user_list")
 	public String userList(){
 		return "system/user_list";
@@ -69,14 +72,39 @@ public class UserController extends BaseController {
     
     @RequestMapping("/user_grant")
     public String toGrant(Model model,Integer userId){
-        User user=userService.selectUserById(userId);        
+        User user=userService.selectUserRolesByUserId(userId);        
         model.addAttribute("user", user);
         return "system/user_grant";
     }
     
-   /* @RequestMapping("/ajax_undistributed_role_list")
+   @RequestMapping("/ajax_undistributed_role_list")
     @ResponseBody
-    public Role ajaxUndistributedRoleList(User user){
-        
-    }*/
+    public String ajaxUndistributedRoleList(String roleIds){
+        return roleService.selectUserRoleByRoleIdList(roleIds);
+    }
+   @RequestMapping("/ajax_deceased_role_list")
+   @ResponseBody
+   public String ajaxDeceasedRoleList(String roleIds){
+	   return roleService.selectDeceasedUserRoleByRoleIdList(roleIds);
+   }
+   @RequestMapping("/ajax_save_user_role")
+   @ResponseBody
+   public ResultInfo ajaxSaveUserRole(String roleIds,Integer userId){
+	   try {
+		return userService.saveUserRole(userId, roleIds, getCurrentLoginName());
+	} catch (Exception e) {
+		//e.printStackTrace();
+		return ResultInfo.returnCodeMessage(ResultCode.USER_ROLE_SAVE_ERROR);
+	}
+   }
+   @RequestMapping("/user_delete")
+   @ResponseBody
+   public ResultInfo userDelete(Integer userId){
+	   try {
+		return userService.deleteUserAndRole(userId);
+	} catch (Exception e) {
+		e.printStackTrace();
+		return ResultInfo.returnCodeMessage(ResultCode.USER_ROLE_DELETE_ERROR);
+	}
+   }
 }

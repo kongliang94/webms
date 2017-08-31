@@ -26,7 +26,9 @@ public enum ResultCode {
 	USER_ROLE_SAVE_ERROR("1504","用户分配角色信息失败"),
 	USER_FAIL_ERROR("1505","失效用户失败,程序异常"),
 	ROLE_FAILK_ERROR("1506","失效角色失败,程序异常"),
-	RES_FAILK_ERROR("1507","失效资源失败,程序异常")
+	RES_FAILK_ERROR("1507","失效资源失败,程序异常"),
+	USER_ROLE_DELETE_ERROR("1508","删除用户信息失败"),
+	USER_ROLE_DELETE_SUCCESS("1509","删除用户信息成功")
 	;
 
 	ResultCode(String code, String msg) {

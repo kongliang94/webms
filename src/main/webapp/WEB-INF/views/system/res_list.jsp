@@ -35,6 +35,8 @@
                 </div>
             </blockquote>
             <div class="larry-separate"></div>
+            <input type="hidden" id="pdata-id" name="respid" value="${resMaxId}"></input>
+            
             <!-- 操作日志 -->
             <div class="layui-tab-item layui-field-box layui-show" >
                 <div class="layui-form">
@@ -94,20 +96,35 @@
 
         //新增菜单
         $(".resAdd_btn").click(function(){
+        	var respId = $("#pdata-id").val();
+        	alert(respId);
             var index = top.layui.layer.open({
                 title : '<i class="larry-icon larry-caidanguanli"></i>新增菜单',
                 type : 2,
                 skin : 'layui-layer-molv',
-                content : "${ctx}/res/res_edit",
+                content : "${ctx}/res/res_add?resParentId="+respId,
                 area: ['750px', '470px '],
                 resize:false,
                 anim:1,
                 success : function(layero, index){
 
                 }
-            })
-        })
+            });
+        });
+        //修改用户
+        $("body").on("click",".res_edit",function(){
+           var resId = $(this).attr("data-id");
+            var index = layui.layer.open({
+                title : "编辑资源",
+                type : 2,
+                content : "${ctx}/res/res_edit?resId="+resId,
+                area: ['750px', '470px '],
+                success : function(layero, index){
 
+                }
+            });
+       });
+       
         function paging(curr){
             var pageLoading = layer.load(2);
             $.ajax({

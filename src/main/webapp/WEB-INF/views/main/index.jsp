@@ -79,7 +79,7 @@
         <div class="layui-side layui-bg-black">
             <div class="user-photo">
                 <a class="img" title="我的头像" ><img src="${ctx}/static/img/face.jpg"></a>
-                <p>你好！<span class="userName">系统管理员</span>, 欢迎登录</p>
+                <p>你好！<span class="userName">${currentUser}</span>, 欢迎登录</p>
             </div>
             <!-- 左侧菜单-->
             <div class="navBar layui-side-scroll" id="navBarId"></div>

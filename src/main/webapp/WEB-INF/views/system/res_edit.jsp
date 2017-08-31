@@ -27,13 +27,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input newsName" lay-verify="required" placeholder="请输入菜单名称">
+                <input type="text" class="layui-input newsName" lay-verify="required" value="${res.resName}" placeholder="请输入菜单名称">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">菜单路径</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input newsName" >
+                <input type="text" class="layui-input newsName" value="${res.resLinkAddress}" />
             </div>
         </div>
 
@@ -52,10 +52,12 @@
         <div class="layui-inline">
             <label class="layui-form-label">父级菜单</label>
             <div class="layui-input-inline">
-                <select name="city" >
-                    <option value=""></option>
-
-                </select>
+                <select name="resParentId">
+					<option value="">请选择</option>
+					<c:forEach items="${resList}" var="value"> 
+						<option value="${value.resId}" <c:if test="${resParentId==value.resId }">selected</c:if> >${value.resName }</option>
+					</c:forEach>
+				</select>
             </div>
         </div>
     </div>
@@ -70,7 +72,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">菜单图标</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" id="resImage" name="resImage" value="" disabled>
+                <input type="text" class="layui-input" id="resImage" name="resImage" value="${res.resImage}" disabled>
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <a class="layui-btn layui-btn-mini select_img" data-id="" title="选择图标"><i class="layui-icon larry-icon larry-tupianguanli"></i></a>'
@@ -80,14 +82,14 @@
     <div class="layui-form-item" pane>
         <label class="layui-form-label">资源状态</label>
         <div class="layui-input-inline">
-            <input type="radio" name="userStatus" value="0" title="有效" checked>
-            <input type="radio" name="userStatus" value="1" title="失效" >
+            <input type="radio" name="resStatus" value="0" title="有效" <c:if test="${res.resStatus ==0 }">checked</c:if> />
+            <input type="radio" name="resStatus" value="1" title="失效" <c:if test="${res.resStatus ==1 }">checked</c:if> />
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-            <textarea name="desc" placeholder="请输入内容" class="layui-textarea" maxlength="50" style="resize:none;min-height:40px;"></textarea>
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea" maxlength="50" style="resize:none;min-height:40px;"  value="${res.resRemark}"></textarea>
         </div>
     </div>
     </div>
@@ -123,30 +125,30 @@
 
         //保存
         form.on("submit(saveRes)",function(data){
-            alert(data.field.resImage)
-            <%--var userSaveLoading = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});--%>
-            <%--//登陆验证--%>
-            <%--$.ajax({--%>
-                <%--url : '${ctx}/user/ajax_save_user',--%>
-                <%--type : 'post',--%>
-                <%--async: false,--%>
-                <%--data : data.field,--%>
-                <%--success : function(data) {--%>
-                    <%--if(data.returnCode == 0000){--%>
-                        <%--top.layer.close(userSaveLoading);--%>
-                        <%--top.layer.msg("用户信息保存成功！");--%>
-                        <%--var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引--%>
-                        <%--parent.layer.close(index); //再执行关闭                        //刷新父页面--%>
-                        <%--parent.location.reload();--%>
-                    <%--}else{--%>
-                        <%--top.layer.close(userSaveLoading);--%>
-                        <%--top.layer.msg(data.returnMessage);--%>
-                    <%--}--%>
-                <%--},error:function(data){--%>
-                    <%--top.layer.close(index);--%>
+        	var resSaveLoading = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+        	//alert(data.field.resImage);
+            //登陆验证
+            $.ajax({
+                url : '${ctx}/res/ajax_save_res',
+                type : 'post',
+                async: false,
+                data : data.field,
+                success : function(data) {
+                    if(data.returnCode == 0000){
+                        top.layer.close(userSaveLoading);
+                        top.layer.msg("资源信息保存成功！");
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭                        //刷新父页面
+                        parent.location.reload();
+                    }else{
+                        top.layer.close(userSaveLoading);
+                        top.layer.msg(data.returnMessage);
+                    }
+                },error:function(data){
+                    top.layer.close(index);
 
-                <%--}--%>
-            <%--});--%>
+                }
+            });
             return false;
         });
 

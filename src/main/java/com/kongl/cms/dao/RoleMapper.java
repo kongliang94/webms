@@ -101,5 +101,14 @@ public interface RoleMapper {
      */
     List<Role> selectDeceasedUserRoleByRoleIdList(Integer[] roleId);
 
+    /**
+     * 
+     * <p>function:根据角色名查询角色
+     * <p>User: 
+     * <p>Date: 
+     *
+     */
+	Role selectRoleByName(String roleName);
+
 
 }
